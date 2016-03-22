@@ -19,6 +19,7 @@
 // ---------
 // Allocator
 // ---------
+using namespace std;
 
 template <typename T, std::size_t N>
 class Allocator {
@@ -71,7 +72,8 @@ class Allocator {
          */
         bool valid () const {
             // <your code>
-            return true;}
+            return !(N < sizeof(T) + (2 * sizeof(int)));
+        }
 
         /**
          * O(1) in space
@@ -94,8 +96,16 @@ class Allocator {
          * throw a bad_alloc exception, if N is less than sizeof(T) + (2 * sizeof(int))
          */
         Allocator () {
-            (*this)[0] = 0; // replace!
+            //(*this)[0] = 0; // replace!
             // <your code>
+            if (valid()) {
+              (*this)[0] = 98;
+              (*this)[N-1] = 98;
+            }
+            else {
+              bad_alloc exception;
+              throw exception;
+            }              
             assert(valid());}
 
         // Default copy, destructor, and copy assignment

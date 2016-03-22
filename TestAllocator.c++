@@ -90,11 +90,12 @@ TYPED_TEST(TestAllocator1, test_10) {
 
 TEST(TestAllocator2, const_index) {
     const Allocator<int, 100> x;
-    ASSERT_EQ(x[0], 0);}
+    cout << "x: " << x[0] << endl;
+    ASSERT_EQ(98, x[0]);}
 
 TEST(TestAllocator2, index) {
     Allocator<int, 100> x;
-    ASSERT_EQ(x[0], 0);}
+    ASSERT_EQ(98, x[0]);}
 
 // --------------
 // TestAllocator3
