@@ -49,6 +49,8 @@ TYPED_TEST(TestAllocator1, test_1) {
     const size_type      s = 1;
     const value_type     v = 2;
     const pointer        p = x.allocate(s);
+    const size_type temp = 3;
+    x.allocate(temp);
     if (p != nullptr) {
         x.construct(p, v);
         ASSERT_EQ(v, *p);
@@ -90,12 +92,15 @@ TYPED_TEST(TestAllocator1, test_10) {
 
 TEST(TestAllocator2, const_index) {
     const Allocator<int, 100> x;
-    cout << "x: " << x[0] << endl;
-    ASSERT_EQ(98, x[0]);}
+    ASSERT_EQ(92, x[0]);}
+
+TEST(TestAllocator2, const_index2) {
+    const Allocator<int, 100> x;
+    ASSERT_EQ(92, x[96]);}
 
 TEST(TestAllocator2, index) {
     Allocator<int, 100> x;
-    ASSERT_EQ(98, x[0]);}
+    ASSERT_EQ(92, x[0]);}
 
 // --------------
 // TestAllocator3

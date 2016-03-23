@@ -98,9 +98,9 @@ class Allocator {
         Allocator () {
             //(*this)[0] = 0; // replace!
             // <your code>
-            if (valid()) {
-              (*this)[0] = 98;
-              (*this)[N-1] = 98;
+            if (!(N < sizeof(T) + (2 * sizeof(int)))) {
+              (*this)[0] = N-8;
+              (*this)[N-4] = N-8;
             }
             else {
               bad_alloc exception;
@@ -127,8 +127,42 @@ class Allocator {
          */
         pointer allocate (size_type n) {
             // <your code>
-            assert(valid());
-            return nullptr;}             // replace!
+            // Find first fit; if no fit -> n is invalid?
+            // set sentinels 
+            // if free block cannot fit another allocatioin, allocate more than needed 
+            // return pointer to first elem after sentinel
+          for (int i = 0; i < N - 1; i++) {
+            int blockSize = (*this)[i];
+            //int& sentinelB = (*this)[i+blockSize+4];
+            if (blockSize > 0 && blockSize < N) {
+              if ((*this)[i+blockSize+4] == blockSize) {
+                //allocate
+                int dataSize = n * sizeof(T);
+                int blockSizeNeeded = dataSize + 2 * sizeof(int);
+                int allocatedBlockSize = blockSizeNeeded;
+                if (blockSize >= blockSizeNeeded) {
+                  if (blockSize - blockSizeNeeded < sizeof(T) + 2 * sizeof(int))
+                    blockSizeNeeded = blockSize;
+
+                  (*this)[i] = -1 * (n * sizeof(T));
+                  (*this)[i+4+dataSize] = -1 * dataSize;
+
+                  //set new sentinels for new free block
+                  (*this)[i+4+dataSize+4] = blockSize - blockSizeNeeded;
+                  (*this)[i+blockSize+4]= blockSize - blockSizeNeeded;
+                  
+                  int& firstData = (*this)[i+4];
+                  pointer ptr = reinterpret_cast<pointer>(firstData);
+                  return ptr;
+                }
+              }
+            }
+            if (blockSize < 0 && -1 * blockSize < N && (*this)[i+(-1*blockSize)+4] == blockSize) {
+              //skip over these
+              i += (-1*blockSize) + 8;
+            }
+          }          
+          return nullptr;}             // replace!
 
         // ---------
         // construct
