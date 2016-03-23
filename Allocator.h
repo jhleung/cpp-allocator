@@ -82,7 +82,22 @@ class Allocator {
          * https://code.google.com/p/googletest/wiki/AdvancedGuide#Private_Class_Members
          */
         FRIEND_TEST(TestAllocator2, index);
-        int& operator [] (int i) {
+        FRIEND_TEST(TestAllocator2, test_1);
+                FRIEND_TEST(TestAllocator2, test_2);
+FRIEND_TEST(TestAllocator2, test_3);
+FRIEND_TEST(TestAllocator2, test_4);
+FRIEND_TEST(TestAllocator2, test_5);
+FRIEND_TEST(TestAllocator2, test_6);
+FRIEND_TEST(TestAllocator2, test_7);
+FRIEND_TEST(TestAllocator2, test_8);
+FRIEND_TEST(TestAllocator2, test_9);
+FRIEND_TEST(TestAllocator2, default_constructor);
+        FRIEND_TEST(TestAllocator2, min_size_constructor);
+        FRIEND_TEST(TestAllocator2, min_size_allocate);
+        FRIEND_TEST(TestAllocator2, split_allocate);
+        FRIEND_TEST(TestAllocator2, odd_size_allocate);
+        FRIEND_TEST(TestAllocator2, bad_argument_allocate);
+int& operator [] (int i) {
             return *reinterpret_cast<int*>(&a[i]);}
 
     public:
@@ -126,43 +141,60 @@ class Allocator {
          * throw a bad_alloc exception, if n is invalid
          */
         pointer allocate (size_type n) {
-            // <your code>
-            // Find first fit; if no fit -> n is invalid?
-            // set sentinels 
-            // if free block cannot fit another allocatioin, allocate more than needed 
-            // return pointer to first elem after sentinel
+          if (n < 0) {
+            bad_alloc exception;
+            throw exception;
+          }
+
           for (int i = 0; i < N - 1; i++) {
             int blockSize = (*this)[i];
-            //int& sentinelB = (*this)[i+blockSize+4];
             if (blockSize > 0 && blockSize < N) {
               if ((*this)[i+blockSize+4] == blockSize) {
-                //allocate
                 int dataSize = n * sizeof(T);
                 int blockSizeNeeded = dataSize + 2 * sizeof(int);
                 int allocatedBlockSize = blockSizeNeeded;
-                if (blockSize >= blockSizeNeeded) {
-                  if (blockSize - blockSizeNeeded < sizeof(T) + 2 * sizeof(int))
+
+                //entire array is free and allocation requests entire array
+                if (blockSize == blockSizeNeeded) {
+                    (*this)[i] = -1 * (n * sizeof(T)) - 8;
+                    (*this)[i+blockSize+4] = -1 * (n * sizeof(T)) - 8;
+                    pointer ptr = reinterpret_cast<pointer>(&a[i+4]);
+                    return ptr;
+                }
+                
+                //blocksize+8 to account for sentinels 
+                if (blockSize + 8 >= blockSizeNeeded) {
+                  //found an exact fit
+                  if (blockSize + 8 - blockSizeNeeded == 0)
+                  {
+                    (*this)[i] = -1 * (n * sizeof(T));
+                    (*this)[i+blockSize+4] = -1 * (n * sizeof(T));
+                    pointer ptr = reinterpret_cast<pointer>(&a[i+4]);
+                    return ptr;
+                  }
+                  if (blockSize + 8 - blockSizeNeeded < sizeof(T) + 2 * sizeof(int)){
                     blockSizeNeeded = blockSize;
+                  }
 
                   (*this)[i] = -1 * (n * sizeof(T));
                   (*this)[i+4+dataSize] = -1 * dataSize;
 
                   //set new sentinels for new free block
                   (*this)[i+4+dataSize+4] = blockSize - blockSizeNeeded;
-                  (*this)[i+blockSize+4]= blockSize - blockSizeNeeded;
+                  (*this)[i+blockSize+4] = blockSize - blockSizeNeeded;
                   
-                  int& firstData = (*this)[i+4];
-                  pointer ptr = reinterpret_cast<pointer>(firstData);
+                  pointer ptr = reinterpret_cast<pointer>(&a[i+4]);
                   return ptr;
                 }
               }
             }
             if (blockSize < 0 && -1 * blockSize < N && (*this)[i+(-1*blockSize)+4] == blockSize) {
               //skip over these
-              i += (-1*blockSize) + 8;
+              i += (-1*blockSize) + 8 - 1;
             }
           }          
-          return nullptr;}             // replace!
+          bad_alloc exception;
+          throw exception;}
 
         // ---------
         // construct
