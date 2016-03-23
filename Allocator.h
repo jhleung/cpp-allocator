@@ -97,6 +97,9 @@ FRIEND_TEST(TestAllocator2, default_constructor);
         FRIEND_TEST(TestAllocator2, split_allocate);
         FRIEND_TEST(TestAllocator2, odd_size_allocate);
         FRIEND_TEST(TestAllocator2, bad_argument_allocate);
+FRIEND_TEST(TestDeallocator1, test_1);
+        FRIEND_TEST(TestDeallocator1, test_2);
+FRIEND_TEST(TestDeallocator1, test_3);
 int& operator [] (int i) {
             return *reinterpret_cast<int*>(&a[i]);}
 
@@ -220,8 +223,31 @@ int& operator [] (int i) {
          * <your documentation>
          */
         void deallocate (pointer p, size_type) {
-            // <your code>
-            assert(valid());}
+          // change sentinels from negative to positive  
+          // coalesce:
+          //  check if next sentinel which is 4 away, is pos or negative
+          //  if positive, subtract index of sentinel - ptr
+          int *pp = reinterpret_cast<int*>(p);
+          int sentinelAPos = -1;
+          int& sentinelA = *(pp+sentinelAPos);
+          int sentinelBPos = (-1*(sentinelA))/4;
+          int& sentinelB = *(pp+sentinelBPos);
+
+          if (sentinelA < 0 && sentinelA == sentinelB) {
+            sentinelA *= -1;
+            sentinelB *= -1;
+            int sentinelAdjAPos = sentinelBPos + 1;
+            int& sentinelAdjA = *(pp + sentinelAdjAPos);
+            int sentinelAdjBPos = (abs(sentinelAdjA))/4 + sentinelAdjAPos + 1;
+            int& sentinelAdjB = *(pp + sentinelAdjBPos);
+            
+            if (sentinelAdjA > 0 && sentinelAdjA == sentinelAdjB) {
+              int coalesceSize = sentinelA+sentinelAdjA + 8;
+              sentinelA = coalesceSize;
+              sentinelAdjB = coalesceSize;    
+            }
+          }
+          assert(valid());}
 
         // -------
         // destroy
