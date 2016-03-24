@@ -49,8 +49,6 @@ TYPED_TEST(TestAllocator1, test_1) {
     const size_type      s = 1;
     const value_type     v = 2;
     const pointer        p = x.allocate(s);
-    const size_type temp = 3;
-    x.allocate(temp);
     if (p != nullptr) {
         x.construct(p, v);
         ASSERT_EQ(v, *p);
@@ -97,10 +95,6 @@ TEST(TestAllocator2, const_index) {
 TEST(TestAllocator2, const_index2) {
     const Allocator<int, 100> x;
     ASSERT_EQ(92, x[96]);}
-
-TEST(TestAllocator2, index) {
-    Allocator<int, 100> x;
-    ASSERT_EQ(92, x[0]);}
 
 // --------------
 // TestAllocator3
@@ -168,3 +162,236 @@ TYPED_TEST(TestAllocator3, test_10) {
             --e;
             x.destroy(e);}
         x.deallocate(b, s);}}
+
+// MY TESTS BEGIN
+
+// --------------
+// Constructor
+// --------------
+
+TEST(TestAllocator4, constructor1) {
+  const Allocator<int, 12> x;
+  ASSERT_EQ(x[0], 4);
+  ASSERT_EQ(x[8], 4);
+}
+
+TEST(TestAllocator4, constructor2) {
+  const Allocator<double, 16> x;
+  ASSERT_EQ(x[0], 8);
+  ASSERT_EQ(x[12], 8);
+}
+
+// --------------
+// Allocate
+// --------------
+
+//simple allocation
+TEST(TestAllocator5, allocate) {
+  Allocator<int, 100> x;
+  x.allocate(1);
+  ASSERT_EQ(x[0], -4);
+  ASSERT_EQ(x[8], -4);
+  ASSERT_EQ(x[12], 80);
+  ASSERT_EQ(x[96], 80);
+
+  x.allocate(5);
+  ASSERT_EQ(x[12], -20);
+  ASSERT_EQ(x[36], -20);
+  ASSERT_EQ(x[40], 52);
+  ASSERT_EQ(x[96], 52);
+  
+  x.allocate(13);
+  ASSERT_EQ(x[40], -52);
+  ASSERT_EQ(x[96], -52);
+}
+
+//allocating more than needed if necessary
+TEST(TestAllocator5, allocate1) {
+  Allocator<int, 100> x;
+  x.allocate(21);
+  ASSERT_EQ(x[0], -92);
+  ASSERT_EQ(x[96], -92);
+}
+
+// allocating exact fit
+TEST(TestAllocator5, allocate2) {
+  Allocator<int, 92> x;
+  x.allocate(21);
+  ASSERT_EQ(x[0], -84);
+  ASSERT_EQ(x[88], -84);
+}
+
+// no free blocks available
+TEST(TestAllocator5, allocate3) {
+  Allocator<int, 12> x;
+  x.allocate(1);
+  ASSERT_EQ(x[0], -4);
+  ASSERT_EQ(x[8], -4);
+
+  try {
+    x.allocate(1);
+    // this shouldnt be reached if bad_alloc exception is thrown
+    ASSERT_EQ(false, true);
+  }
+  catch(bad_alloc exception) {
+    // good we caught the exception
+    ASSERT_EQ(true, true);
+  }
+}
+
+// bad value for n
+TEST(TestAllocator5, allocate4) {
+  Allocator<int, 100> x;
+  try {
+    x.allocate(-1 * 2);
+    // this shouldnt be reached if bad_alloc exception is thrown
+    ASSERT_EQ(false, true);
+  }
+  catch(bad_alloc exception) {
+    // good we caught the exception
+    ASSERT_EQ(true, true);
+  }
+}
+
+// --------------
+// Deallocate
+// --------------
+
+TEST(TestAllocator6, deallocate) {
+  Allocator<int, 100> x;
+  int* p = x.allocate(1);
+  
+  ASSERT_EQ(x[0], -4);
+  ASSERT_EQ(x[8], -4);
+  ASSERT_EQ(x[12], 80);
+  ASSERT_EQ(x[96], 80);
+
+  x.deallocate(p, (size_t) 1);
+
+  ASSERT_EQ(x[0], 92);
+  ASSERT_EQ(x[96], 92);
+}
+
+// both adj blocks are also free after deallocation
+TEST(TestAllocator6, deallocate1) {
+  Allocator<int, 100> x;
+  int* p = x.allocate(1);
+  
+  ASSERT_EQ(x[0], -4);
+  ASSERT_EQ(x[8], -4);
+  ASSERT_EQ(x[12], 80);
+  ASSERT_EQ(x[96], 80);
+
+  int* q = x.allocate(5);
+  ASSERT_EQ(x[12], -20);
+  ASSERT_EQ(x[36], -20);
+  ASSERT_EQ(x[40], 52);
+  ASSERT_EQ(x[96], 52);
+  
+  int* r = x.allocate(13);
+  ASSERT_EQ(x[40], -52);
+  ASSERT_EQ(x[96], -52);
+
+  x.deallocate(p, (size_t) 1);
+  ASSERT_EQ(x[0], 4);
+  ASSERT_EQ(x[8], 4);
+  ASSERT_EQ(x[12], -20);
+  ASSERT_EQ(x[96], -52);
+
+  x.deallocate(r, (size_t) 13);
+  ASSERT_EQ(x[40], 52);
+  ASSERT_EQ(x[96], 52);
+  ASSERT_EQ(x[12], -20);
+  ASSERT_EQ(x[36], -20);
+
+  x.deallocate(q, (size_t) 5);
+  ASSERT_EQ(x[0], 92);
+  ASSERT_EQ(x[96], 92);
+}
+
+// only left adjacent block is also a free block after deallocation
+TEST(TestAllocator6, deallocate2) {
+  Allocator<int, 100> x;
+  int* p = x.allocate(1);
+  
+  ASSERT_EQ(x[0], -4);
+  ASSERT_EQ(x[8], -4);
+  ASSERT_EQ(x[12], 80);
+  ASSERT_EQ(x[96], 80);
+
+  int* q = x.allocate(5);
+  ASSERT_EQ(x[12], -20);
+  ASSERT_EQ(x[36], -20);
+  ASSERT_EQ(x[40], 52);
+  ASSERT_EQ(x[96], 52);
+  
+  int* r = x.allocate(13);
+  ASSERT_EQ(x[40], -52);
+  ASSERT_EQ(x[96], -52);
+
+  x.deallocate(p, (size_t) 1);
+  ASSERT_EQ(x[0], 4);
+  ASSERT_EQ(x[8], 4);
+
+  x.deallocate(q, (size_t) 5);
+  ASSERT_EQ(x[0], 32);
+  ASSERT_EQ(x[36], 32);
+
+  x.deallocate(r, (size_t) 13);
+  ASSERT_EQ(x[0], 92);
+  ASSERT_EQ(x[96], 92);
+}
+
+TEST(TestAllocator6, deallocate3) {
+  Allocator<int, 100> x;
+  int* p = x.allocate(1);
+  
+  ASSERT_EQ(x[0], -4);
+  ASSERT_EQ(x[8], -4);
+  ASSERT_EQ(x[12], 80);
+  ASSERT_EQ(x[96], 80);
+
+  int* q = x.allocate(5);
+  ASSERT_EQ(x[12], -20);
+  ASSERT_EQ(x[36], -20);
+  ASSERT_EQ(x[40], 52);
+  ASSERT_EQ(x[96], 52);
+  
+  int* r = x.allocate(13);
+  ASSERT_EQ(x[40], -52);
+  ASSERT_EQ(x[96], -52);
+
+  x.deallocate(r, (size_t) 13);
+  ASSERT_EQ(x[40], 52);
+  ASSERT_EQ(x[96], 52);
+
+  x.deallocate(q, (size_t) 5);
+  ASSERT_EQ(x[12], 80);
+  ASSERT_EQ(x[96], 80);
+
+  x.deallocate(p, (size_t) 1);
+  ASSERT_EQ(x[0], 92);
+  ASSERT_EQ(x[96], 92);
+}
+
+// given bad pointer
+TEST(TestAllocator6, deallocate4) {
+  Allocator<int, 100> x;
+  int* p = x.allocate(1);
+  int* q = &*(p+1);
+  ASSERT_EQ(x[0], -4);
+  ASSERT_EQ(x[8], -4);
+  ASSERT_EQ(x[12], 80);
+  ASSERT_EQ(x[96], 80);
+  
+  try{
+    x.deallocate(q, (size_t) 1);
+    //this shouldnt be reached
+    ASSERT_EQ(false, true);
+  }
+  catch (invalid_argument exception) {
+    //good caught the exception
+    ASSERT_EQ(true, true);
+  }
+}
+

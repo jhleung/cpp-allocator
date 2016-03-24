@@ -94,31 +94,19 @@ class Allocator {
          * https://code.google.com/p/googletest/wiki/AdvancedGuide#Private_Class_Members
          */
         FRIEND_TEST(TestAllocator2, index);
-        FRIEND_TEST(TestAllocator2, test_1);
-                FRIEND_TEST(TestAllocator2, test_2);
-FRIEND_TEST(TestAllocator2, test_3);
-FRIEND_TEST(TestAllocator2, test_4);
-FRIEND_TEST(TestAllocator2, test_5);
-FRIEND_TEST(TestAllocator2, test_6);
-FRIEND_TEST(TestAllocator2, test_7);
-FRIEND_TEST(TestAllocator2, test_8);
-FRIEND_TEST(TestAllocator2, test_9);
-FRIEND_TEST(TestAllocator2, default_constructor);
-        FRIEND_TEST(TestAllocator2, min_size_constructor);
-        FRIEND_TEST(TestAllocator2, min_size_allocate);
-        FRIEND_TEST(TestAllocator2, split_allocate);
-        FRIEND_TEST(TestAllocator2, odd_size_allocate);
-        FRIEND_TEST(TestAllocator2, bad_argument_allocate);
-FRIEND_TEST(TestDeallocator1, test_1);
-        FRIEND_TEST(TestDeallocator1, test_2);
-FRIEND_TEST(TestDeallocator1, test_3);
         FRIEND_TEST(TestAllocator4, constructor1);
         FRIEND_TEST(TestAllocator4, constructor2);
+        FRIEND_TEST(TestAllocator5, allocate);
         FRIEND_TEST(TestAllocator5, allocate1);
         FRIEND_TEST(TestAllocator5, allocate2);
         FRIEND_TEST(TestAllocator5, allocate3);
         FRIEND_TEST(TestAllocator5, allocate4);
-int& operator [] (int i) {
+        FRIEND_TEST(TestAllocator6, deallocate);
+        FRIEND_TEST(TestAllocator6, deallocate1);
+        FRIEND_TEST(TestAllocator6, deallocate2);
+        FRIEND_TEST(TestAllocator6, deallocate3);
+        FRIEND_TEST(TestAllocator6, deallocate4);
+        int& operator [] (int i) {
             return *reinterpret_cast<int*>(&a[i]);}
 
     public:
