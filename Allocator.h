@@ -71,8 +71,19 @@ class Allocator {
          * <your documentation>
          */
         bool valid () const {
-            // <your code>
-            return !(N < sizeof(T) + (2 * sizeof(int)));
+          for (int i = 0; i < N; i++) {
+            int sentinelA = (*this)[i];
+            if (sentinelA < 0 && abs(sentinelA) < N) {
+              if ((*this)[i+abs(sentinelA)+4] != sentinelA)
+                return false;
+            }
+            if (sentinelA > 0 && sentinelA < N) {
+              if ((*this)[i+sentinelA+4] != sentinelA)
+                return false;
+            }
+            i+=abs(sentinelA)+8-1;
+          }
+          return true;
         }
 
         /**
