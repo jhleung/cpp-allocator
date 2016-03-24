@@ -225,8 +225,9 @@ int& operator [] (int i) {
         void deallocate (pointer p, size_type) {
           // change sentinels from negative to positive  
           // coalesce:
-          //  check if next sentinel which is 4 away, is pos or negative
-          //  if positive, subtract index of sentinel - ptr
+          //    both adj blocks are free
+          //    left adj block is free
+          //    right adj block is free
           int *pp = reinterpret_cast<int*>(p);
           int sentinelAPos = -1;
           int& sentinelA = *(pp+sentinelAPos);
@@ -236,15 +237,53 @@ int& operator [] (int i) {
           if (sentinelA < 0 && sentinelA == sentinelB) {
             sentinelA *= -1;
             sentinelB *= -1;
-            int sentinelAdjAPos = sentinelBPos + 1;
-            int& sentinelAdjA = *(pp + sentinelAdjAPos);
-            int sentinelAdjBPos = (abs(sentinelAdjA))/4 + sentinelAdjAPos + 1;
-            int& sentinelAdjB = *(pp + sentinelAdjBPos);
             
-            if (sentinelAdjA > 0 && sentinelAdjA == sentinelAdjB) {
-              int coalesceSize = sentinelA+sentinelAdjA + 8;
-              sentinelA = coalesceSize;
-              sentinelAdjB = coalesceSize;    
+            //check right adjacent block to deallocated block's sentinels
+            int sentinelRAdjAPos = sentinelBPos + 1;
+            int& sentinelRAdjA = *(pp + sentinelRAdjAPos);
+            int sentinelRAdjBPos = (abs(sentinelRAdjA))/4 + sentinelRAdjAPos + 1;
+            int& sentinelRAdjB = *(pp + sentinelRAdjBPos);
+              
+            //check left adj block...
+            int sentinelLAdjBPos = sentinelAPos - 1;
+            int& sentinelLAdjB = *(pp + sentinelLAdjBPos);
+            int sentinelLAdjAPos = sentinelLAdjBPos - abs(sentinelLAdjB)/4 - 1;
+            int& sentinelLAdjA = *(pp + sentinelLAdjAPos);
+           
+            // both adj blocks are also free after deallocation of requested block 
+            if (sentinelRAdjA > 0 && sentinelRAdjA == sentinelRAdjB && sentinelLAdjA > 0 && sentinelLAdjA == sentinelLAdjB) {
+              int coalesceSize = sentinelLAdjA + sentinelA + sentinelRAdjA + 16;
+              sentinelLAdjA = coalesceSize;
+              sentinelRAdjB = coalesceSize;
+
+              //clear inner sentinels
+              sentinelLAdjB = 0;
+              sentinelA = 0;
+              sentinelB = 0;
+              sentinelRAdjA = 0;
+            }
+            else {
+              // only right adj block is also free
+              if (sentinelRAdjA > 0 && sentinelRAdjA == sentinelRAdjB) {
+                int coalesceSize = sentinelA + sentinelRAdjA + 8;
+                sentinelA = coalesceSize;
+                sentinelRAdjB = coalesceSize;
+
+                //clear inner sentinels
+                sentinelB = 0;
+                sentinelRAdjA = 0;
+              }
+              // only left adj block is also free
+              if (sentinelLAdjA > 0 && sentinelLAdjA == sentinelLAdjB) {
+                int coalesceSize = sentinelB + sentinelLAdjA + 8;
+                sentinelB = coalesceSize;
+                sentinelLAdjA = coalesceSize;
+                
+                //clear inner sentinels
+                sentinelA = 0;
+                sentinelLAdjB = 0;
+                
+              }
             }
           }
           assert(valid());}
