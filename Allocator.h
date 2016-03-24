@@ -81,6 +81,7 @@ class Allocator {
               if ((*this)[i+sentinelA+4] != sentinelA)
                 return false;
             }
+            //pass over non sentinels
             i+=abs(sentinelA)+8-1;
           }
           return true;
@@ -179,8 +180,7 @@ int& operator [] (int i) {
                 //blocksize+8 to account for sentinels 
                 if (blockSize + 8 >= blockSizeNeeded) {
                   //found an exact fit
-                  if (blockSize + 8 - blockSizeNeeded == 0)
-                  {
+                  if (blockSize + 8 - blockSizeNeeded == 0) {
                     (*this)[i] = -1 * (n * sizeof(T));
                     (*this)[i+blockSize+4] = -1 * (n * sizeof(T));
                     pointer ptr = reinterpret_cast<pointer>(&a[i+4]);
@@ -293,9 +293,12 @@ int& operator [] (int i) {
                 //clear inner sentinels
                 sentinelA = 0;
                 sentinelLAdjB = 0;
-                
               }
             }
+          }
+          else {
+            invalid_argument exception;
+            throw exception;
           }
           assert(valid());}
 
