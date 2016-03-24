@@ -112,6 +112,12 @@ FRIEND_TEST(TestAllocator2, default_constructor);
 FRIEND_TEST(TestDeallocator1, test_1);
         FRIEND_TEST(TestDeallocator1, test_2);
 FRIEND_TEST(TestDeallocator1, test_3);
+        FRIEND_TEST(TestAllocator4, constructor1);
+        FRIEND_TEST(TestAllocator4, constructor2);
+        FRIEND_TEST(TestAllocator5, allocate1);
+        FRIEND_TEST(TestAllocator5, allocate2);
+        FRIEND_TEST(TestAllocator5, allocate3);
+        FRIEND_TEST(TestAllocator5, allocate4);
 int& operator [] (int i) {
             return *reinterpret_cast<int*>(&a[i]);}
 
@@ -156,7 +162,7 @@ int& operator [] (int i) {
          * throw a bad_alloc exception, if n is invalid
          */
         pointer allocate (size_type n) {
-          if (n < 0) {
+          if ((int)n < 0) {
             bad_alloc exception;
             throw exception;
           }
@@ -245,6 +251,7 @@ int& operator [] (int i) {
           int sentinelBPos = (-1*(sentinelA))/4;
           int& sentinelB = *(pp+sentinelBPos);
 
+          // is ptr given valid?
           if (sentinelA < 0 && sentinelA == sentinelB) {
             sentinelA *= -1;
             sentinelB *= -1;
@@ -297,8 +304,7 @@ int& operator [] (int i) {
             }
           }
           else {
-            invalid_argument exception;
-            throw exception;
+            throw std::invalid_argument("Recieved bad pointer");
           }
           assert(valid());}
 
