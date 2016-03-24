@@ -96,6 +96,7 @@ class Allocator {
         FRIEND_TEST(TestAllocator2, index);
         FRIEND_TEST(TestAllocator4, constructor1);
         FRIEND_TEST(TestAllocator4, constructor2);
+        FRIEND_TEST(TestAllocator4, constructor3);
         FRIEND_TEST(TestAllocator5, allocate);
         FRIEND_TEST(TestAllocator5, allocate1);
         FRIEND_TEST(TestAllocator5, allocate2);

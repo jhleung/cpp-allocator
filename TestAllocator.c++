@@ -181,6 +181,18 @@ TEST(TestAllocator4, constructor2) {
   ASSERT_EQ(x[12], 8);
 }
 
+//Test for bad_alloc in constructor
+TEST(TestAllocator4, constructor3) {
+  try {
+    const Allocator<int, 4> x;
+    // shouldnt reach this line
+    ASSERT_EQ(false, true);
+  }
+  catch (bad_alloc exception) {
+    ASSERT_EQ(true, true);
+  }
+}
+
 // --------------
 // Allocate
 // --------------
