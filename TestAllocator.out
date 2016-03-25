@@ -1,8 +1,8 @@
-==8924== Memcheck, a memory error detector
-==8924== Copyright (C) 2002-2013, and GNU GPL'd, by Julian Seward et al.
-==8924== Using Valgrind-3.10.1 and LibVEX; rerun with -h for copyright info
-==8924== Command: ./TestAllocator
-==8924== 
+==10466== Memcheck, a memory error detector
+==10466== Copyright (C) 2002-2013, and GNU GPL'd, by Julian Seward et al.
+==10466== Using Valgrind-3.10.1 and LibVEX; rerun with -h for copyright info
+==10466== Command: ./TestAllocator
+==10466== 
 Running main() from gtest_main.cc
 [==========] Running 27 tests from 10 test cases.
 [----------] Global test environment set-up.
@@ -10,7 +10,7 @@ Running main() from gtest_main.cc
 [ RUN      ] TestAllocator1/0.test_1
 [       OK ] TestAllocator1/0.test_1 (9 ms)
 [ RUN      ] TestAllocator1/0.test_10
-[       OK ] TestAllocator1/0.test_10 (4 ms)
+[       OK ] TestAllocator1/0.test_10 (3 ms)
 [----------] 2 tests from TestAllocator1/0 (17 ms total)
 
 [----------] 2 tests from TestAllocator1/1, where TypeParam = std::allocator<double>
@@ -31,14 +31,14 @@ Running main() from gtest_main.cc
 [ RUN      ] TestAllocator1/3.test_1
 [       OK ] TestAllocator1/3.test_1 (8 ms)
 [ RUN      ] TestAllocator1/3.test_10
-[       OK ] TestAllocator1/3.test_10 (2 ms)
-[----------] 2 tests from TestAllocator1/3 (12 ms total)
+[       OK ] TestAllocator1/3.test_10 (3 ms)
+[----------] 2 tests from TestAllocator1/3 (11 ms total)
 
 [----------] 2 tests from TestAllocator2
 [ RUN      ] TestAllocator2.const_index
 [       OK ] TestAllocator2.const_index (1 ms)
 [ RUN      ] TestAllocator2.const_index2
-[       OK ] TestAllocator2.const_index2 (1 ms)
+[       OK ] TestAllocator2.const_index2 (2 ms)
 [----------] 2 tests from TestAllocator2 (3 ms total)
 
 [----------] 2 tests from TestAllocator3/0, where TypeParam = Allocator<int, 100ul>
@@ -53,7 +53,7 @@ Running main() from gtest_main.cc
 [       OK ] TestAllocator3/1.test_1 (3 ms)
 [ RUN      ] TestAllocator3/1.test_10
 [       OK ] TestAllocator3/1.test_10 (2 ms)
-[----------] 2 tests from TestAllocator3/1 (6 ms total)
+[----------] 2 tests from TestAllocator3/1 (5 ms total)
 
 [----------] 3 tests from TestAllocator4
 [ RUN      ] TestAllocator4.constructor1
@@ -81,53 +81,53 @@ Running main() from gtest_main.cc
 [ RUN      ] TestDeallocator1.deallocate
 [       OK ] TestDeallocator1.deallocate (5 ms)
 [ RUN      ] TestDeallocator1.deallocate1
-==8924== Conditional jump or move depends on uninitialised value(s)
-==8924==    at 0x41B102: Allocator<int, 100ul>::deallocate(int*, unsigned long) (in /v/filer4b/v38q001/jleung/Downloads/OOP/cs371p-allocator/TestAllocator)
-==8924==    by 0x40DC09: TestDeallocator1_deallocate1_Test::TestBody() (in /v/filer4b/v38q001/jleung/Downloads/OOP/cs371p-allocator/TestAllocator)
-==8924==    by 0x44B5F2: void testing::internal::HandleExceptionsInMethodIfSupported<testing::Test, void>(testing::Test*, void (testing::Test::*)(), char const*) (in /v/filer4b/v38q001/jleung/Downloads/OOP/cs371p-allocator/TestAllocator)
-==8924==    by 0x43E12C: testing::Test::Run() (in /v/filer4b/v38q001/jleung/Downloads/OOP/cs371p-allocator/TestAllocator)
-==8924==    by 0x43E1C3: testing::TestInfo::Run() (in /v/filer4b/v38q001/jleung/Downloads/OOP/cs371p-allocator/TestAllocator)
-==8924==    by 0x43E2C4: testing::TestCase::Run() (in /v/filer4b/v38q001/jleung/Downloads/OOP/cs371p-allocator/TestAllocator)
-==8924==    by 0x43E53C: testing::internal::UnitTestImpl::RunAllTests() (in /v/filer4b/v38q001/jleung/Downloads/OOP/cs371p-allocator/TestAllocator)
-==8924==    by 0x43E81D: testing::UnitTest::Run() (in /v/filer4b/v38q001/jleung/Downloads/OOP/cs371p-allocator/TestAllocator)
-==8924==    by 0x40539F: main (in /v/filer4b/v38q001/jleung/Downloads/OOP/cs371p-allocator/TestAllocator)
-==8924== 
+==10466== Conditional jump or move depends on uninitialised value(s)
+==10466==    at 0x41B36E: Allocator<int, 100ul>::deallocate(int*, unsigned long) (in /v/filer4b/v38q001/jleung/Downloads/OOP/cs371p-allocator/TestAllocator)
+==10466==    by 0x40DE6D: TestDeallocator1_deallocate1_Test::TestBody() (in /v/filer4b/v38q001/jleung/Downloads/OOP/cs371p-allocator/TestAllocator)
+==10466==    by 0x44B3B2: void testing::internal::HandleExceptionsInMethodIfSupported<testing::Test, void>(testing::Test*, void (testing::Test::*)(), char const*) (in /v/filer4b/v38q001/jleung/Downloads/OOP/cs371p-allocator/TestAllocator)
+==10466==    by 0x43DEEC: testing::Test::Run() (in /v/filer4b/v38q001/jleung/Downloads/OOP/cs371p-allocator/TestAllocator)
+==10466==    by 0x43DF83: testing::TestInfo::Run() (in /v/filer4b/v38q001/jleung/Downloads/OOP/cs371p-allocator/TestAllocator)
+==10466==    by 0x43E084: testing::TestCase::Run() (in /v/filer4b/v38q001/jleung/Downloads/OOP/cs371p-allocator/TestAllocator)
+==10466==    by 0x43E2FC: testing::internal::UnitTestImpl::RunAllTests() (in /v/filer4b/v38q001/jleung/Downloads/OOP/cs371p-allocator/TestAllocator)
+==10466==    by 0x43E5DD: testing::UnitTest::Run() (in /v/filer4b/v38q001/jleung/Downloads/OOP/cs371p-allocator/TestAllocator)
+==10466==    by 0x40539F: main (in /v/filer4b/v38q001/jleung/Downloads/OOP/cs371p-allocator/TestAllocator)
+==10466== 
 [       OK ] TestDeallocator1.deallocate1 (16 ms)
 [ RUN      ] TestDeallocator1.deallocate2
 [       OK ] TestDeallocator1.deallocate2 (12 ms)
 [ RUN      ] TestDeallocator1.deallocate3
 [       OK ] TestDeallocator1.deallocate3 (12 ms)
 [ RUN      ] TestDeallocator1.deallocate4
-==8924== Conditional jump or move depends on uninitialised value(s)
-==8924==    at 0x41AC47: Allocator<int, 100ul>::deallocate(int*, unsigned long) (in /v/filer4b/v38q001/jleung/Downloads/OOP/cs371p-allocator/TestAllocator)
-==8924==    by 0x414E6F: TestDeallocator1_deallocate4_Test::TestBody() (in /v/filer4b/v38q001/jleung/Downloads/OOP/cs371p-allocator/TestAllocator)
-==8924==    by 0x44B5F2: void testing::internal::HandleExceptionsInMethodIfSupported<testing::Test, void>(testing::Test*, void (testing::Test::*)(), char const*) (in /v/filer4b/v38q001/jleung/Downloads/OOP/cs371p-allocator/TestAllocator)
-==8924==    by 0x43E12C: testing::Test::Run() (in /v/filer4b/v38q001/jleung/Downloads/OOP/cs371p-allocator/TestAllocator)
-==8924==    by 0x43E1C3: testing::TestInfo::Run() (in /v/filer4b/v38q001/jleung/Downloads/OOP/cs371p-allocator/TestAllocator)
-==8924==    by 0x43E2C4: testing::TestCase::Run() (in /v/filer4b/v38q001/jleung/Downloads/OOP/cs371p-allocator/TestAllocator)
-==8924==    by 0x43E53C: testing::internal::UnitTestImpl::RunAllTests() (in /v/filer4b/v38q001/jleung/Downloads/OOP/cs371p-allocator/TestAllocator)
-==8924==    by 0x43E81D: testing::UnitTest::Run() (in /v/filer4b/v38q001/jleung/Downloads/OOP/cs371p-allocator/TestAllocator)
-==8924==    by 0x40539F: main (in /v/filer4b/v38q001/jleung/Downloads/OOP/cs371p-allocator/TestAllocator)
-==8924== 
-[       OK ] TestDeallocator1.deallocate4 (6 ms)
+==10466== Conditional jump or move depends on uninitialised value(s)
+==10466==    at 0x41AEB3: Allocator<int, 100ul>::deallocate(int*, unsigned long) (in /v/filer4b/v38q001/jleung/Downloads/OOP/cs371p-allocator/TestAllocator)
+==10466==    by 0x4150D3: TestDeallocator1_deallocate4_Test::TestBody() (in /v/filer4b/v38q001/jleung/Downloads/OOP/cs371p-allocator/TestAllocator)
+==10466==    by 0x44B3B2: void testing::internal::HandleExceptionsInMethodIfSupported<testing::Test, void>(testing::Test*, void (testing::Test::*)(), char const*) (in /v/filer4b/v38q001/jleung/Downloads/OOP/cs371p-allocator/TestAllocator)
+==10466==    by 0x43DEEC: testing::Test::Run() (in /v/filer4b/v38q001/jleung/Downloads/OOP/cs371p-allocator/TestAllocator)
+==10466==    by 0x43DF83: testing::TestInfo::Run() (in /v/filer4b/v38q001/jleung/Downloads/OOP/cs371p-allocator/TestAllocator)
+==10466==    by 0x43E084: testing::TestCase::Run() (in /v/filer4b/v38q001/jleung/Downloads/OOP/cs371p-allocator/TestAllocator)
+==10466==    by 0x43E2FC: testing::internal::UnitTestImpl::RunAllTests() (in /v/filer4b/v38q001/jleung/Downloads/OOP/cs371p-allocator/TestAllocator)
+==10466==    by 0x43E5DD: testing::UnitTest::Run() (in /v/filer4b/v38q001/jleung/Downloads/OOP/cs371p-allocator/TestAllocator)
+==10466==    by 0x40539F: main (in /v/filer4b/v38q001/jleung/Downloads/OOP/cs371p-allocator/TestAllocator)
+==10466== 
+[       OK ] TestDeallocator1.deallocate4 (7 ms)
 [----------] 5 tests from TestDeallocator1 (52 ms total)
 
 [----------] Global test environment tear-down
-[==========] 27 tests from 10 test cases ran. (197 ms total)
+[==========] 27 tests from 10 test cases ran. (198 ms total)
 [  PASSED  ] 27 tests.
-==8924== 
-==8924== HEAP SUMMARY:
-==8924==     in use at exit: 0 bytes in 0 blocks
-==8924==   total heap usage: 994 allocs, 994 frees, 131,653 bytes allocated
-==8924== 
-==8924== All heap blocks were freed -- no leaks are possible
-==8924== 
-==8924== For counts of detected and suppressed errors, rerun with: -v
-==8924== Use --track-origins=yes to see where uninitialised values come from
-==8924== ERROR SUMMARY: 2 errors from 2 contexts (suppressed: 0 from 0)
+==10466== 
+==10466== HEAP SUMMARY:
+==10466==     in use at exit: 0 bytes in 0 blocks
+==10466==   total heap usage: 994 allocs, 994 frees, 131,653 bytes allocated
+==10466== 
+==10466== All heap blocks were freed -- no leaks are possible
+==10466== 
+==10466== For counts of detected and suppressed errors, rerun with: -v
+==10466== Use --track-origins=yes to see where uninitialised values come from
+==10466== ERROR SUMMARY: 2 errors from 2 contexts (suppressed: 0 from 0)
 File 'TestAllocator.c++'
 Lines executed:92.98% of 228
 Branches executed:51.24% of 1780
 Taken at least once:26.29% of 1780
-Calls executed:40.91% of 1721
+Calls executed:40.34% of 1745
 Creating 'TestAllocator.c++.gcov'
