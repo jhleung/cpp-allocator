@@ -1,0 +1,125 @@
+commit 514df5515eccf1c8c7df3955e0a0aa400acdfc6b
+Author: jeffrey leung <jleung@cs.utexas.edu>
+Date:   Thu Mar 24 20:00:52 2016 -0500
+
+    remake html
+
+commit fbe34be70b9a411ac69ad7f7e5056129cdeebed2
+Author: jeffrey leung <jleung@cs.utexas.edu>
+Date:   Thu Mar 24 19:47:43 2016 -0500
+
+    added allocator.log
+
+commit 2289157f48e2bef0cac049ee45d9343f36f16661
+Author: jeffrey leung <jleung@cs.utexas.edu>
+Date:   Thu Mar 24 19:46:28 2016 -0500
+
+    fixed testallocator.out
+
+commit 242a6e524e8e8cd0970bc8f875cd3c08e48c3a46
+Author: jeffrey leung <jleung@cs.utexas.edu>
+Date:   Thu Mar 24 19:39:39 2016 -0500
+
+    updated tests for exceptions
+
+commit 0b116d7785576e818286cbea15371548fdfbdbd2
+Author: jeffrey leung <jleung@cs.utexas.edu>
+Date:   Thu Mar 24 19:13:24 2016 -0500
+
+    delete README
+
+commit dcfcc3292e3df24ab3ac3a35c3d6b7853b06a143
+Author: jeffrey leung <jleung@cs.utexas.edu>
+Date:   Thu Mar 24 19:12:23 2016 -0500
+
+    doxygen
+
+commit 8867272f55861370d0b6ab18827e519c7cdceca1
+Author: jeffrey leung <jleung@cs.utexas.edu>
+Date:   Thu Mar 24 19:04:54 2016 -0500
+
+    updated tesallocator.out
+
+commit 0463432c158030d619f58e16fe91b3fff1e41d59
+Author: jeffrey leung <jleung@cs.utexas.edu>
+Date:   Thu Mar 24 19:02:31 2016 -0500
+
+    fixed most conditional jump errors
+
+commit ba994fd0ee95b8b5dcd889547644543e242272c2
+Author: jeffrey leung <jleung@cs.utexas.edu>
+Date:   Wed Mar 23 22:28:13 2016 -0500
+
+    fix TestAllocator.out
+
+commit 98008f3496c7ee21f64318665a800933697f8009
+Author: jeffrey leung <jleung@cs.utexas.edu>
+Date:   Wed Mar 23 22:23:11 2016 -0500
+
+    added test for bad alloc exception in constructor
+
+commit aff66f2dd67287074643a1a211533d960d58a4e6
+Author: jeffrey leung <jleung@cs.utexas.edu>
+Date:   Wed Mar 23 21:57:37 2016 -0500
+
+    added unit tests for all funcitons
+
+commit 900df36e6baafdc10c368265c9232df067a2d7c7
+Author: jeffrey leung <jleung@cs.utexas.edu>
+Date:   Wed Mar 23 21:16:44 2016 -0500
+
+    fixed checking for negative n in allocate
+
+commit ad8a756e783c6fa12b90446bf085e360d5b3c31c
+Author: jeffrey leung <jleung@cs.utexas.edu>
+Date:   Wed Mar 23 20:20:37 2016 -0500
+
+    deallocate() throws exception if given a bad pointer #19
+
+commit c3ffeb2cb3848333232f721b7b71c8e81a2f9af3
+Author: jeffrey leung <jleung@cs.utexas.edu>
+Date:   Wed Mar 23 20:07:27 2016 -0500
+
+    fixed valid() #17
+
+commit 07e8082c7764c4c2070b64396e49762ff20be62e
+Author: jeffrey leung <jleung@cs.utexas.edu>
+Date:   Wed Mar 23 19:43:06 2016 -0500
+
+    fixed Allocator
+
+commit a930cae4023122a084b2dbe537c86059fa408ff7
+Author: jeffrey leung <jleung@cs.utexas.edu>
+Date:   Wed Mar 23 18:33:10 2016 -0500
+
+    deallocate() working
+
+commit ab3e9737254baa1aa014fa244cff26fb4474649a
+Author: jeffrey leung <jleung@cs.utexas.edu>
+Date:   Wed Mar 23 14:14:44 2016 -0500
+
+    finished debugging allocate()
+
+commit fad6652c601631e5dde5fc414d5d387f3e9ad978
+Author: jeffrey leung <jleung@cs.utexas.edu>
+Date:   Wed Mar 23 01:40:46 2016 -0500
+
+    i think i got allocate  closes#13
+
+commit 2fadd9c82a0b806208c62d8c01b1775154b2327b
+Author: jeffrey leung <jleung@cs.utexas.edu>
+Date:   Mon Mar 21 23:11:51 2016 -0500
+
+    made constructor for Allocator
+
+commit f11b5a2b0144fb822c946027134b3687b9763bee
+Author: jeffrey leung <jleung@cs.utexas.edu>
+Date:   Mon Mar 21 16:24:39 2016 -0500
+
+    copying over files
+
+commit 185000c4f529c7f7ad50724f423983f0399f8438
+Author: jeffrey leung <jleung@cs.utexas.edu>
+Date:   Mon Mar 21 16:19:21 2016 -0500
+
+    init
