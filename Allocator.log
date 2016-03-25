@@ -1,3 +1,15 @@
+commit 514df5515eccf1c8c7df3955e0a0aa400acdfc6b
+Author: jeffrey leung <jleung@cs.utexas.edu>
+Date:   Thu Mar 24 20:00:52 2016 -0500
+
+    remake html
+
+commit fbe34be70b9a411ac69ad7f7e5056129cdeebed2
+Author: jeffrey leung <jleung@cs.utexas.edu>
+Date:   Thu Mar 24 19:47:43 2016 -0500
+
+    added allocator.log
+
 commit 2289157f48e2bef0cac049ee45d9343f36f16661
 Author: jeffrey leung <jleung@cs.utexas.edu>
 Date:   Thu Mar 24 19:46:28 2016 -0500
