@@ -269,7 +269,7 @@ TEST(TestAllocator5, allocate4) {
 // Deallocate
 // --------------
 
-TEST(TestAllocator6, deallocate) {
+TEST(TestDeallocator1, deallocate) {
   Allocator<int, 100> x;
   int* p = x.allocate(1);
   
@@ -285,7 +285,7 @@ TEST(TestAllocator6, deallocate) {
 }
 
 // both adj blocks are also free after deallocation
-TEST(TestAllocator6, deallocate1) {
+TEST(TestDeallocator1, deallocate1) {
   Allocator<int, 100> x;
   int* p = x.allocate(1);
   
@@ -293,7 +293,7 @@ TEST(TestAllocator6, deallocate1) {
   ASSERT_EQ(x[8], -4);
   ASSERT_EQ(x[12], 80);
   ASSERT_EQ(x[96], 80);
-
+  
   int* q = x.allocate(5);
   ASSERT_EQ(x[12], -20);
   ASSERT_EQ(x[36], -20);
@@ -319,10 +319,11 @@ TEST(TestAllocator6, deallocate1) {
   x.deallocate(q, (size_t) 5);
   ASSERT_EQ(x[0], 92);
   ASSERT_EQ(x[96], 92);
+  
 }
 
 // only left adjacent block is also a free block after deallocation
-TEST(TestAllocator6, deallocate2) {
+TEST(TestDeallocator1, deallocate2) {
   Allocator<int, 100> x;
   int* p = x.allocate(1);
   
@@ -354,16 +355,17 @@ TEST(TestAllocator6, deallocate2) {
   ASSERT_EQ(x[96], 92);
 }
 
-TEST(TestAllocator6, deallocate3) {
+TEST(TestDeallocator1, deallocate3) {
   Allocator<int, 100> x;
   int* p = x.allocate(1);
-  
+ 
   ASSERT_EQ(x[0], -4);
   ASSERT_EQ(x[8], -4);
   ASSERT_EQ(x[12], 80);
   ASSERT_EQ(x[96], 80);
 
   int* q = x.allocate(5);
+  
   ASSERT_EQ(x[12], -20);
   ASSERT_EQ(x[36], -20);
   ASSERT_EQ(x[40], 52);
@@ -387,7 +389,7 @@ TEST(TestAllocator6, deallocate3) {
 }
 
 // given bad pointer
-TEST(TestAllocator6, deallocate4) {
+TEST(TestDeallocator1, deallocate4) {
   Allocator<int, 100> x;
   int* p = x.allocate(1);
   int* q = &*(p+1);
@@ -406,4 +408,3 @@ TEST(TestAllocator6, deallocate4) {
     ASSERT_EQ(true, true);
   }
 }
-

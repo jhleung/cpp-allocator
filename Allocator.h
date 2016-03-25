@@ -102,11 +102,11 @@ class Allocator {
         FRIEND_TEST(TestAllocator5, allocate2);
         FRIEND_TEST(TestAllocator5, allocate3);
         FRIEND_TEST(TestAllocator5, allocate4);
-        FRIEND_TEST(TestAllocator6, deallocate);
-        FRIEND_TEST(TestAllocator6, deallocate1);
-        FRIEND_TEST(TestAllocator6, deallocate2);
-        FRIEND_TEST(TestAllocator6, deallocate3);
-        FRIEND_TEST(TestAllocator6, deallocate4);
+        FRIEND_TEST(TestDeallocator1, deallocate);
+        FRIEND_TEST(TestDeallocator1, deallocate1);
+        FRIEND_TEST(TestDeallocator1, deallocate2);
+        FRIEND_TEST(TestDeallocator1, deallocate3);
+        FRIEND_TEST(TestDeallocator1, deallocate4);
         int& operator [] (int i) {
             return *reinterpret_cast<int*>(&a[i]);}
 
@@ -247,30 +247,38 @@ class Allocator {
             
             //check right adjacent block to deallocated block's sentinels
             int sentinelRAdjAPos = sentinelBPos + 1;
-            int& sentinelRAdjA = *(pp + sentinelRAdjAPos);
-            int sentinelRAdjBPos = (abs(sentinelRAdjA))/4 + sentinelRAdjAPos + 1;
-            int& sentinelRAdjB = *(pp + sentinelRAdjBPos);
-              
+
             //check left adj block...
             int sentinelLAdjBPos = sentinelAPos - 1;
-            int& sentinelLAdjB = *(pp + sentinelLAdjBPos);
-            int sentinelLAdjAPos = sentinelLAdjBPos - abs(sentinelLAdjB)/4 - 1;
-            int& sentinelLAdjA = *(pp + sentinelLAdjAPos);
-           
+                        
             // both adj blocks are also free after deallocation of requested block 
-            if (sentinelRAdjA > 0 && sentinelRAdjA == sentinelRAdjB && sentinelLAdjA > 0 && sentinelLAdjA == sentinelLAdjB) {
-              int coalesceSize = sentinelLAdjA + sentinelA + sentinelRAdjA + 16;
-              sentinelLAdjA = coalesceSize;
-              sentinelRAdjB = coalesceSize;
+            if (pp+sentinelRAdjAPos <= &(*this)[N-1] && pp+sentinelLAdjBPos >= &(*this)[0]) {
+              int& sentinelRAdjA = *(pp + sentinelRAdjAPos);
+              int sentinelRAdjBPos = (abs(sentinelRAdjA))/4 + sentinelRAdjAPos + 1;
+              int& sentinelRAdjB = *(pp + sentinelRAdjBPos);
+              
+              int& sentinelLAdjB = *(pp + sentinelLAdjBPos);
+              int sentinelLAdjAPos = sentinelLAdjBPos - abs(sentinelLAdjB)/4 - 1;
+              int& sentinelLAdjA = *(pp + sentinelLAdjAPos);
+ 
+              if (sentinelRAdjA > 0 && sentinelRAdjA == sentinelRAdjB && sentinelLAdjA > 0 && sentinelLAdjA == sentinelLAdjB) {
+                int coalesceSize = sentinelLAdjA + sentinelA + sentinelRAdjA + 16;
+                sentinelLAdjA = coalesceSize;
+                sentinelRAdjB = coalesceSize;
 
-              //clear inner sentinels
-              sentinelLAdjB = 0;
-              sentinelA = 0;
-              sentinelB = 0;
-              sentinelRAdjA = 0;
+                //clear inner sentinels
+                sentinelLAdjB = 0;
+                sentinelA = 0;
+                sentinelB = 0;
+                sentinelRAdjA = 0;
+              }
             }
-            else {
-              // only right adj block is also free
+            // only right adj block is also free
+            if (pp+sentinelRAdjAPos <= &(*this)[N-1]) {
+              int& sentinelRAdjA = *(pp + sentinelRAdjAPos);
+              int sentinelRAdjBPos = (abs(sentinelRAdjA))/4 + sentinelRAdjAPos + 1;
+              int& sentinelRAdjB = *(pp + sentinelRAdjBPos);
+
               if (sentinelRAdjA > 0 && sentinelRAdjA == sentinelRAdjB) {
                 int coalesceSize = sentinelA + sentinelRAdjA + 8;
                 sentinelA = coalesceSize;
@@ -280,12 +288,17 @@ class Allocator {
                 sentinelB = 0;
                 sentinelRAdjA = 0;
               }
+            }
+            if(pp+sentinelLAdjBPos >= &(*this)[0]) {
               // only left adj block is also free
+              int& sentinelLAdjB = *(pp + sentinelLAdjBPos);
+              int sentinelLAdjAPos = sentinelLAdjBPos - abs(sentinelLAdjB)/4 - 1;
+              int& sentinelLAdjA = *(pp + sentinelLAdjAPos);
               if (sentinelLAdjA > 0 && sentinelLAdjA == sentinelLAdjB) {
                 int coalesceSize = sentinelB + sentinelLAdjA + 8;
                 sentinelB = coalesceSize;
                 sentinelLAdjA = coalesceSize;
-                
+
                 //clear inner sentinels
                 sentinelA = 0;
                 sentinelLAdjB = 0;
