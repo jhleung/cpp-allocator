@@ -186,10 +186,10 @@ TEST(TestAllocator4, constructor3) {
   try {
     const Allocator<int, 4> x;
     // shouldnt reach this line
-    ASSERT_EQ(false, true);
+    ASSERT_TRUE(0);
   }
   catch (bad_alloc exception) {
-    ASSERT_EQ(true, true);
+    ASSERT_TRUE(1);
   }
 }
 
@@ -243,11 +243,11 @@ TEST(TestAllocator5, allocate3) {
   try {
     x.allocate(1);
     // this shouldnt be reached if bad_alloc exception is thrown
-    ASSERT_EQ(false, true);
+    ASSERT_TRUE(0);
   }
   catch(bad_alloc exception) {
     // good we caught the exception
-    ASSERT_EQ(true, true);
+    ASSERT_TRUE(1);
   }
 }
 
@@ -257,11 +257,11 @@ TEST(TestAllocator5, allocate4) {
   try {
     x.allocate(-1 * 2);
     // this shouldnt be reached if bad_alloc exception is thrown
-    ASSERT_EQ(false, true);
+    ASSERT_TRUE(0);
   }
   catch(bad_alloc exception) {
     // good we caught the exception
-    ASSERT_EQ(true, true);
+    ASSERT_TRUE(1);
   }
 }
 
@@ -401,10 +401,10 @@ TEST(TestDeallocator1, deallocate4) {
   try{
     x.deallocate(q, (size_t) 1);
     //this shouldnt be reached
-    ASSERT_EQ(false, true);
+    ASSERT_TRUE(0);
   }
   catch (invalid_argument exception) {
     //good caught the exception
-    ASSERT_EQ(true, true);
+    ASSERT_TRUE(1);
   }
 }
